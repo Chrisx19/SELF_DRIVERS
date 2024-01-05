@@ -14,13 +14,14 @@ static HAL_StatusTypeDef INA219_init(INA219_t *my_INA, I2C_HandleTypeDef *I2C_ha
 	return HAL_OK;
 }
 
-static HAL_StatusTypeDef INA219_ReadRegister(INA219_t *my_INA, uint8_t reg)
+static HAL_StatusTypeDef INA219_ReadRegister(INA219_t *my_INA, uint8_t const reg)
 {
-	HAL_I2C_Mem_Read(my_INA->I2C_handle, INA219_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, my_INA->receive, 2, HAL_MAX_DELAY);
-	return (  (my_INA->receive[0] << 8) | my_INA->receive[1]  );
+	HAL_StatusTypeDef code = HAL_ERROR;
+	code = HAL_I2C_Mem_Read(my_INA->I2C_handle, INA219_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, my_INA->receive, 2, HAL_MAX_DELAY);
+	return code;
 }
 
-static HAL_StatusTypeDef INA219_WriteRegister(INA219_t *my_INA, uint8_t reg, uint16_t data)
+static HAL_StatusTypeDef INA219_WriteRegister(INA219_t *my_INA, uint8_t const reg, uint16_t data)
 {
 	my_INA->send[0] = (data >> 8) & 0xff;  // upper byte
 	my_INA->send[1] = (data >> 0) & 0xff;
@@ -50,10 +51,14 @@ static int16_t INA219_GetShuntVoltage_Raw(INA219_t *my_INA)
 	return my_INA->data_read_buff[1];
 }
 
-static int16_t INA219_GetCurrent_Raw(INA219_t *my_INA)
+static void INA219_GetCurrent_Raw(INA219_t *my_INA)
 {
-	my_INA->data_read_buff[2] = INA219_ReadRegister(my_INA, INA219_REG_CURRENT);
-	return my_INA->data_read_buff[2];
+	if( INA219_ReadRegister(my_INA, INA219_REG_CURRENT) != HAL_OK ) {
+		my_INA->data_read_buff[CURRENT] = -1;
+		return;
+	}
+	
+	my_INA->data_read_buff[CURRENT] = (my_INA->receive[0] << 8) | my_INA->receive[1]); 
 }
 
 /* NOT DONE */
@@ -72,11 +77,16 @@ float INA219_GetShuntVoltage_mV(INA219_t *my_INA)
 	return (my_INA->voltage_shunt_value * 0.01);
 }
 
-/* NOT DONE */
 float INA219_GetCurrent_mA(INA219_t *my_INA)
 {
 	uint8_t const CURRENT_DIVIDER_MA = 10; 
-	my_INA->current_value = INA219_GetCurrent_Raw(my_INA);
+	INA219_GetCurrent_Raw(my_INA);
+	my_INA->current_value = my_INA->data_read_buff[CURRENT];
+
+	if ( my_INA->current_value == -1 ) {
+		return -1;
+	}
+	
 	my_INA->current_value /= CURRENT_DIVIDER_MA;
 	return my_INA->current_value;
 }
