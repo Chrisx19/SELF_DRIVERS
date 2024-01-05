@@ -128,25 +128,14 @@ typedef struct {
 }INA219_t;
 
 /******************************************************* Functions for converting and initialize *******************************************************/
-HAL_StatusTypeDef INA219_init(INA219_t *my_INA, I2C_HandleTypeDef *I2C_handle);
 
 void INA219_setCalibration_32V_2A(INA219_t *my_INA);
-
-int16_t INA219_GetVoltage_Raw(INA219_t *my_INA);
-
-int16_t INA219_GetShuntVoltage_Raw(INA219_t *my_INA);
-
-int16_t INA219_GetCurrent_Raw(INA219_t *my_INA);
 
 float INA219_GetVoltage_V(INA219_t *my_INA);
 
 float INA219_GetShuntVoltage_mV(INA219_t *my_INA);
 
 float INA219_GetCurrent_mA(INA219_t *my_INA);
-/***************************************************** LOW-LEVEL Functions *****************************************************/
-HAL_StatusTypeDef INA219_ReadRegister(INA219_t *my_INA, uint8_t reg);
-
-HAL_StatusTypeDef INA219_WriteRegister(INA219_t *my_INA, uint8_t reg, uint16_t data);
 
 
 #endif
