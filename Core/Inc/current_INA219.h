@@ -107,6 +107,12 @@ typedef enum{
 /** calibration register **/
 #define INA219_REG_CALIBRATION  (0x05U)
 
+typedef enum {
+    CURRENT,
+    VOLTAGE,
+    POWER
+} INA219_DATA;
+
 typedef struct {
     I2C_HandleTypeDef *I2C_handle;
 
