@@ -3,18 +3,12 @@
 
 HAL_StatusTypeDef INA219_init(INA219_t *my_INA, I2C_HandleTypeDef *I2C_handle)
 {
-	my_INA->I2C_handle	      	= I2C_handle;//this is typedef
-
+	my_INA->I2C_handle	      	= I2C_handle;
 	my_INA->calibrationValue 	= 0;
-
 	my_INA->data_read_buff[3]  	= 0;
-
 	my_INA->voltage_value		= 0;
-
 	my_INA->voltage_shunt_value	= 0;
-
 	my_INA->current_value 		= 0;
-
 
 	INA219_setCalibration_32V_2A(my_INA);
 
@@ -84,8 +78,8 @@ float INA219_GetShuntVoltage_mV(INA219_t *my_INA)
 
 float INA219_GetCurrent_mA(INA219_t *my_INA)
 {
-	const uint8_t currentDivider_mA = 10;
+	uint8_t const CURRENT_DIVIDER_MA = 10; 
 	my_INA->current_value = INA219_GetCurrent_Raw(my_INA);
-	my_INA->current_value /= currentDivider_mA;
+	my_INA->current_value /= CURRENT_DIVIDER_MA;
 	return my_INA->current_value;
 }
