@@ -56,6 +56,7 @@ static int16_t INA219_GetCurrent_Raw(INA219_t *my_INA)
 	return my_INA->data_read_buff[2];
 }
 
+/* NOT DONE */
 float INA219_GetVoltage_V(INA219_t *my_INA)
 {
 	my_INA->voltage_value = INA219_GetVoltage_Raw(my_INA);
@@ -63,6 +64,7 @@ float INA219_GetVoltage_V(INA219_t *my_INA)
 	return my_INA->voltage_value;
 }
 
+/* NOT DONE */
 float INA219_GetShuntVoltage_mV(INA219_t *my_INA)
 {
 	my_INA->voltage_shunt_value = INA219_GetShuntVoltage_Raw(my_INA);
@@ -70,6 +72,7 @@ float INA219_GetShuntVoltage_mV(INA219_t *my_INA)
 	return (my_INA->voltage_shunt_value * 0.01);
 }
 
+/* NOT DONE */
 float INA219_GetCurrent_mA(INA219_t *my_INA)
 {
 	uint8_t const CURRENT_DIVIDER_MA = 10; 
