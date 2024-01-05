@@ -1,7 +1,6 @@
 #include "current_INA219.h"
 
-
-HAL_StatusTypeDef INA219_init(INA219_t *my_INA, I2C_HandleTypeDef *I2C_handle)
+static HAL_StatusTypeDef INA219_init(INA219_t *my_INA, I2C_HandleTypeDef *I2C_handle)
 {
 	my_INA->I2C_handle	      	= I2C_handle;
 	my_INA->calibrationValue 	= 0;
@@ -15,14 +14,13 @@ HAL_StatusTypeDef INA219_init(INA219_t *my_INA, I2C_HandleTypeDef *I2C_handle)
 	return HAL_OK;
 }
 
-HAL_StatusTypeDef INA219_ReadRegister(INA219_t *my_INA, uint8_t reg)
+static HAL_StatusTypeDef INA219_ReadRegister(INA219_t *my_INA, uint8_t reg)
 {
 	HAL_I2C_Mem_Read(my_INA->I2C_handle, INA219_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, my_INA->receive, 2, HAL_MAX_DELAY);
-
 	return (  (my_INA->receive[0] << 8) | my_INA->receive[1]  );
 }
 
-HAL_StatusTypeDef INA219_WriteRegister(INA219_t *my_INA, uint8_t reg, uint16_t data)
+static HAL_StatusTypeDef INA219_WriteRegister(INA219_t *my_INA, uint8_t reg, uint16_t data)
 {
 	my_INA->send[0] = (data >> 8) & 0xff;  // upper byte
 	my_INA->send[1] = (data >> 0) & 0xff;
@@ -32,7 +30,7 @@ HAL_StatusTypeDef INA219_WriteRegister(INA219_t *my_INA, uint8_t reg, uint16_t d
 void INA219_setCalibration_32V_2A(INA219_t *my_INA)
 {
 	uint16_t config 		  =   SHUNT_BUS_CONT | SADC_12BIT_532US
-				                  | BADC_12BIT_532US | PG_GAIN_8_40mV | BRNG_FSR_32V;
+				       | BADC_12BIT_532US | PG_GAIN_8_40mV | BRNG_FSR_32V;
 
 	my_INA->calibrationValue = 0x1000;
 
@@ -40,25 +38,21 @@ void INA219_setCalibration_32V_2A(INA219_t *my_INA)
 	INA219_WriteRegister(my_INA, INA219_REG_CALIBRATION, my_INA->calibrationValue);
 }
 
-int16_t INA219_GetVoltage_Raw(INA219_t *my_INA)
+static int16_t INA219_GetVoltage_Raw(INA219_t *my_INA)
 {
 	my_INA->data_read_buff[0] = INA219_ReadRegister(my_INA, INA219_REG_BUSVOLTAGE);
-
 	return my_INA->data_read_buff[0];
 }
 
-int16_t INA219_GetShuntVoltage_Raw(INA219_t *my_INA)
+static int16_t INA219_GetShuntVoltage_Raw(INA219_t *my_INA)
 {
-
 	my_INA->data_read_buff[1] = INA219_ReadRegister(my_INA, INA219_REG_SHUNTVOLTAGE);
-
 	return my_INA->data_read_buff[1];
 }
 
-int16_t INA219_GetCurrent_Raw(INA219_t *my_INA)
+static int16_t INA219_GetCurrent_Raw(INA219_t *my_INA)
 {
 	my_INA->data_read_buff[2] = INA219_ReadRegister(my_INA, INA219_REG_CURRENT);
-
 	return my_INA->data_read_buff[2];
 }
 
