@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "stm32f4xx_hal.h"
+#include "stm32f3xx_hal.h"
 
 #define INA219_ADDRESS  (0x40 << 1)         //0th Bit is for R/W(Read or Write)
 
@@ -135,7 +135,7 @@ typedef struct {
 
 /******************************************************* Functions for converting and initialize *******************************************************/
 
-void INA219_setCalibration_32V_2A(INA219_t *my_INA);
+HAL_StatusTypeDef INA219_init(INA219_t *my_INA, I2C_HandleTypeDef *I2C_handle);
 
 float INA219_GetVoltage_V(INA219_t *my_INA);
 
