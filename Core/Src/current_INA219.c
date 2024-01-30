@@ -42,14 +42,14 @@ static void setCalibration_32V_2A(INA219_t *my_INA)
 
 static int16_t INA219_GetVoltage_Raw(INA219_t *my_INA)
 {
-	my_INA->data_read_buff[0] = INA219_ReadRegister(my_INA, INA219_REG_BUSVOLTAGE);
-	return my_INA->data_read_buff[0];
+	my_INA->data_read_buff[VOLTAGE] = INA219_ReadRegister(my_INA, INA219_REG_BUSVOLTAGE);
+	return my_INA->data_read_buff[VOLTAGE];
 }
 
 static int16_t INA219_GetShuntVoltage_Raw(INA219_t *my_INA)
 {
-	my_INA->data_read_buff[1] = INA219_ReadRegister(my_INA, INA219_REG_SHUNTVOLTAGE);
-	return my_INA->data_read_buff[1];
+	my_INA->data_read_buff[VOLTAGE] = INA219_ReadRegister(my_INA, INA219_REG_SHUNTVOLTAGE);
+	return my_INA->data_read_buff[VOLTAGE];
 }
 
 
