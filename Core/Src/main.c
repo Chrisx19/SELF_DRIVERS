@@ -10,7 +10,6 @@ SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart2;
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 //int __io_putchar(int ch);
