@@ -109,9 +109,9 @@ int main(void)
   while (1)
   {
 	  adcVal_0 = MCP3008_ReadChannel_1(&mcp);
-	  sprintf(txBuff, "Test = %d\r\n", adcVal_0);
+	  sprintf(txBuff, "Ch1 Val = %d\r\n", adcVal_0);
 	  printf(txBuff);
-	  HAL_Delay(1000);
+	  HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
