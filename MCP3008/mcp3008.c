@@ -82,11 +82,10 @@ static MCP3008_Error_t MCP3008_TransmitReceiveRegister(MCP3008_t *mcp, uint8_t c
 int16_t MCP3008_ReadChannel_1(MCP3008_t *mcp)
 {
 	int16_t rawVal = 0;
-	const uint8_t START_BIT = 1; 
 	const uint8_t CH1_CONFIG = (MCP3008_SINGLE_ENDED | MCP3008_CHANNEL_0);
 	MCP3008_Error_t retVal = MCP3008_ERR_SUCCESS;
 	retVal |= MCP3008_Enable(mcp);
-	retVal |= MCP3008_TransmitRegister(mcp, START_BIT);
+	retVal |= MCP3008_TransmitRegister(mcp, MCP3008_START_BIT);
 	retVal |= MCP3008_TransmitReceiveRegister(mcp, CH1_CONFIG);
 	retVal |= MCP3008_ReceiveRegister(mcp);
 	retVal |= MCP3008_Disable(mcp);
