@@ -32,9 +32,8 @@ typedef enum {
 
 typedef struct {
 	SPI_HandleTypeDef *hspi1;
-	bool mcpEnable;
-	uint8_t txBuff;
 	uint8_t rxBuff[RX_SIZE];
+	int16_t adcData;
 } MCP3008_t;
 
 MCP3008_Error_t MCP3008_Init(MCP3008_t *mcp, SPI_HandleTypeDef *hspi1);
